@@ -364,8 +364,9 @@ End-to-end ML project development
 👨‍💻 Contributors
 
 Your Name
-
-Teammate Name
+lalita 
+Srimuktha
+ganesh
 
 
 
