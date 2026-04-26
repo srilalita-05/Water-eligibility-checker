@@ -362,8 +362,6 @@ End-to-end ML project development
 ---
 
 👨‍💻 Contributors
-
-Your Name
 lalita 
 Srimuktha
 ganesh
