@@ -1,0 +1,72 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual Environment
+venv/
+env/
+.env
+.venv
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+*.ipynb
+
+# ML Models & Data (large binaries)
+models/best_model.*
+models/*.pkl
+models/*.joblib
+models/*.h5
+models/*.pt
+models/*.pth
+models/processed_*
+models/shap_data*
+models/model_met*
+models/preprocessi*
+
+# Data files
+data/*.csv
+data/*.json
+data/*.parquet
+data/*.xlsx
+data/*.db
+# Keep the gitkeep placeholder
+!data/.gitkeep
+
+# Outputs (generated files)
+outputs/*.png
+outputs/*.jpg
+outputs/*.pdf
+outputs/*.html
+# Keep the gitkeep placeholder
+!outputs/.gitkeep
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment variables
+.env
+.env.*
+
+# Coverage & testing
+.coverage
+htmlcov/
+.pytest_cache/
