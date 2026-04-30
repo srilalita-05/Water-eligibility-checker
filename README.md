@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 🌱 AI-Based Freshwater Quality Assessment System for Sustainable Agriculture 
 
 📌 Project Overview
@@ -381,3 +382,146 @@ This project is for academic and research purposes.
 
 We acknowledge the use of open datasets and Python ML libraries that made this project possible.
 
+=======
+# 💧 AI-Based Freshwater Quality Assessment System for Sustainable Agriculture
+
+A production-ready, modular, and interpretable Machine Learning system that classifies groundwater quality for agricultural use based on chemical parameters.
+
+## 🎯 Project Overview
+
+This system uses supervised classification to analyze freshwater chemical parameters and predict whether water is **suitable** or **not suitable** for agricultural irrigation. It provides SHAP-based interpretable explanations for every prediction, making it ideal for academic presentations and real-world deployment.
+
+## 📁 Project Structure
+
+```
+water_elegibility_checker/
+├── data/
+│   └── ground_water_quality.csv     # Raw dataset
+├── src/
+│   ├── __init__.py
+│   ├── preprocessing.py              # Data cleaning & pipeline
+│   ├── train_model.py                # Model training & tuning
+│   ├── evaluate.py                   # Evaluation & visualizations
+│   └── predict.py                    # Prediction module
+├── models/                           # Saved models & pipelines
+├── outputs/                          # Generated plots
+├── app/
+│   └── streamlit_app.py              # Web UI
+├── requirements.txt
+└── README.md
+```
+
+## 🔬 Features Analyzed
+
+| Parameter | Description |
+|-----------|-------------|
+| pH | Acidity/Alkalinity of water |
+| E.C | Electrical Conductivity (µS/cm) |
+| TDS | Total Dissolved Solids (mg/L) |
+| CO3 | Carbonate (mg/L) |
+| HCO3 | Bicarbonate (mg/L) |
+| Cl | Chloride (mg/L) |
+| F | Fluoride (mg/L) |
+| NO3 | Nitrate (mg/L) |
+| SO4 | Sulphate (mg/L) |
+| Na | Sodium (mg/L) |
+| K | Potassium (mg/L) |
+| Ca | Calcium (mg/L) |
+| Mg | Magnesium (mg/L) |
+| T.H | Total Hardness (mg/L) |
+| SAR | Sodium Adsorption Ratio |
+
+## 🚀 Quick Start
+
+### 1. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 2. Run Preprocessing
+
+```bash
+python src/preprocessing.py
+```
+
+### 3. Train Models
+
+```bash
+python src/train_model.py
+```
+
+### 4. Evaluate
+
+```bash
+python src/evaluate.py
+```
+
+### 5. Make Predictions
+
+```bash
+python src/predict.py
+```
+
+### 6. Launch Web App
+
+```bash
+streamlit run app/streamlit_app.py
+```
+
+## 🤖 Models Used
+
+| Model | Description |
+|-------|-------------|
+| **Random Forest** | Ensemble of decision trees with bagging |
+| **Gradient Boosting** | Sequential boosting with gradient descent |
+| **XGBoost** | Optimized gradient boosting (optional) |
+
+All models are tuned using **RandomizedSearchCV** with **5-fold stratified cross-validation**.
+
+## 📊 Evaluation Metrics
+
+- **Accuracy** — Overall correct predictions
+- **Precision** — Correctness of positive predictions
+- **Recall** — Coverage of actual positives
+- **F1-Score** — Harmonic mean of precision & recall
+- **ROC-AUC** — Area under the ROC curve
+
+## 🧠 Interpretability
+
+- **Feature Importance** — Built-in model feature rankings
+- **SHAP Summary Plot** — Global feature impact visualization
+- **SHAP Waterfall** — Individual prediction explanations
+- **Human-readable explanations** — Natural language output
+
+### Example Output
+```
+Prediction: Not Suitable for Agriculture (Confidence: 87.3%)
+Key factors: high Sodium Adsorption Ratio, high Total Dissolved Solids,
+low Calcium contributed to this classification.
+```
+
+## 🌐 Web Application
+
+The Streamlit app provides:
+- Input fields for all 15 water parameters
+- Real-time prediction with confidence score
+- SHAP-based visual explanation
+- Top contributing factors with direction and impact
+
+## 📦 Dependencies
+
+- Python 3.8+
+- pandas, numpy, scikit-learn
+- matplotlib, seaborn
+- shap, joblib, streamlit
+- xgboost (optional)
+
+## 👩‍💻 Author
+
+Built as an academic ML project demonstrating end-to-end machine learning pipeline development with emphasis on interpretability and production readiness.
+
+## 📄 License
+
+This project is for educational purposes.
+>>>>>>> f1108bf (Remove tracked binaries and data files)
