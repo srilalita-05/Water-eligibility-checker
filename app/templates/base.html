@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AquaCheck AI</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💧</text></svg>">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        function changePreset(preset) {
+            window.location.href = "{{ url_for('index') }}?preset=" + preset;
+        }
+    </script>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>💧 AquaCheck AI</h2>
+        <hr>
+        <h3>📋 Navigation</h3>
+        <a href="{{ url_for('index') }}" class="{{ 'active' if request.endpoint == 'index' else '' }}">🧪 Predict</a>
+        <a href="{{ url_for('dashboard') }}" class="{{ 'active' if request.endpoint == 'dashboard' else '' }}">📊 Dashboard</a>
+        <a href="{{ url_for('about') }}" class="{{ 'active' if request.endpoint == 'about' else '' }}">📖 About</a>
+        <hr>
+        <h3>🤖 Model Info</h3>
+        {% if meta %}
+            <p><strong>Algorithm:</strong> <br>{{ meta.best_model_name }}</p>
+            <p><strong>ROC-AUC:</strong> <br><code>{{ "%.4f"|format(meta.test_auc) }}</code></p>
+            <p><strong>Status:</strong> <br>🟢 Ready</p>
+        {% else %}
+            <div style="background: rgba(255,200,0,0.2); border-left: 3px solid orange; padding: 0.5rem;">
+                Model not trained yet
+            </div>
+        {% endif %}
+        
+        {% if request.endpoint == 'index' %}
+        <hr>
+        <h3>🎯 Quick Presets</h3>
+        <select class="sidebar-select" onchange="changePreset(this.value)">
+            <option value="custom" {% if preset == 'custom' %}selected{% endif %}>Custom</option>
+            <option value="safe" {% if preset == 'safe' %}selected{% endif %}>Safe Water Sample</option>
+            <option value="unsafe" {% if preset == 'unsafe' %}selected{% endif %}>Unsafe Water Sample</option>
+        </select>
+        {% endif %}
+    </div>
+
+    <div class="main-content">
+        <div class="hero">
+            <h1>💧 AquaCheck AI</h1>
+            <p>Intelligent Freshwater Quality Assessment for Sustainable Agriculture</p>
+            <div class="badge">🤖 POWERED BY MACHINE LEARNING & SHAP EXPLAINABILITY</div>
+        </div>
+
+        {% block content %}{% endblock %}
+
+        <div class="footer">
+            💧 AquaCheck AI — Freshwater Quality Assessment System | Built with Scikit-learn, SHAP & Flask
+        </div>
+    </div>
+</body>
+</html>

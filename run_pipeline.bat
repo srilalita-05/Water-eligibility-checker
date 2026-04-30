@@ -49,6 +49,6 @@ echo ============================================================
 echo  All steps completed! 
 echo.
 echo  To launch the web app, run:
-echo    streamlit run app/streamlit_app.py
+echo    python app/app.py
 echo ============================================================
 pause

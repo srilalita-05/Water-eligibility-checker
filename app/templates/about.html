@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="col-2">
+    <div class="section-card">
+        <div class="section-title">🎯 Purpose</div>
+        <p>This AI system analyzes <b>15 chemical parameters</b> of groundwater to determine 
+        if it is <b>suitable for agricultural irrigation</b>. Built with interpretable ML, 
+        every prediction comes with a clear explanation of <i>why</i> the water was classified 
+        the way it was.</p>
+    </div>
+    
+    <div class="section-card">
+        <div class="section-title">🤖 ML Pipeline</div>
+        <ol>
+        <li><b>Preprocessing:</b> Median imputation + StandardScaler</li>
+        <li><b>Models:</b> Random Forest, Gradient Boosting, XGBoost</li>
+        <li><b>Tuning:</b> RandomizedSearchCV (30 iter, 5-fold CV)</li>
+        <li><b>Selection:</b> Best model by ROC-AUC</li>
+        <li><b>Explainability:</b> SHAP TreeExplainer</li>
+        </ol>
+    </div>
+</div>
+
+<div class="col-2">
+    <div class="section-card">
+        <div class="section-title">🔬 Parameters Analyzed</div>
+        <table style="width:100%; font-size:0.95rem; border-collapse: separate; border-spacing: 0 0.5rem;">
+        <tr><td>⚗️ pH Level</td><td>⚡ Electrical Conductivity</td></tr>
+        <tr><td>🧂 Total Dissolved Solids</td><td>🔬 Carbonate</td></tr>
+        <tr><td>🧫 Bicarbonate</td><td>🟢 Chloride</td></tr>
+        <tr><td>🔵 Fluoride</td><td>🟡 Nitrate</td></tr>
+        <tr><td>🟠 Sulphate</td><td>🔴 Sodium</td></tr>
+        <tr><td>🟣 Potassium</td><td>⚪ Calcium</td></tr>
+        <tr><td>🟤 Magnesium</td><td>💎 Total Hardness</td></tr>
+        <tr><td colspan="2">📐 Sodium Adsorption Ratio</td></tr>
+        </table>
+    </div>
+    
+    <div class="section-card">
+        <div class="section-title">📊 Dataset</div>
+        <ul style="line-height: 1.6;">
+        <li><b>Source:</b> Telangana Groundwater Quality Data</li>
+        <li><b>Samples:</b> ~1,000 water samples across 30+ districts</li>
+        <li><b>Season:</b> Post-monsoon 2021</li>
+        <li><b>Target:</b> P.S. (Safe) / MR (Marginal) / U.S. (Unsuitable)</li>
+        </ul>
+    </div>
+</div>
+
+<div class="section-card" style="text-align:center;">
+    <div class="section-title">🚀 How to Use</div>
+    <p>1️⃣ Go to <b>🧪 Predict</b> → 2️⃣ Enter water parameters → 3️⃣ Click <b>Analyze</b> → 4️⃣ Get results with AI explanation</p>
+</div>
+{% endblock %}

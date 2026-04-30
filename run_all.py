@@ -123,5 +123,5 @@ else:
     print("  SOME CHECKS FAILED — see above")
 print("=" * 60)
 print("\n  To launch the web app, run:")
-print("    streamlit run app/streamlit_app.py")
+print("    python app/app.py")
 print()

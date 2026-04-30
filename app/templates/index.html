@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form method="POST" action="{{ url_for('index') }}">
+    <div class="section-card">
+        <div class="section-title">🧪 Enter Water Chemical Parameters</div>
+        <div class="form-grid">
+            {% for col in features %}
+            <div class="form-group">
+                <label for="{{ col }}">{{ icons[col] }} {{ display[col] }} {% if units[col] %}({{ units[col] }}){% endif %}</label>
+                <input type="number" step="0.1" id="{{ col }}" name="{{ col }}" 
+                       min="{{ ranges[col][0] }}" max="{{ ranges[col][1] }}" 
+                       value="{{ defaults[col] }}" required>
+            </div>
+            {% endfor %}
+        </div>
+        <button type="submit" class="btn-primary">🔍 Analyze Water Quality</button>
+    </div>
+</form>
+
+{% if error %}
+<div class="alert-info" style="border-left-color: #ef4444; color: #b91c1c; background-color: #fef2f2;">
+    ⚠️ Error: {{ error }}
+</div>
+{% endif %}
+
+{% if result %}
+<div class="result-box {{ 'result-suitable' if is_safe else 'result-unsuitable' }}">
+    <div class="result-icon">{{ '✅' if is_safe else '❌' }}</div>
+    <div class="result-label" style="color: {{ '#059669' if is_safe else '#dc2626' }}">{{ result.label }}</div>
+    <div class="result-conf">Confidence: {{ "%.1f"|format(result.confidence * 100) }}%</div>
+</div>
+
+<div class="metric-row">
+    <div class="metric-card mc-green">
+        <div class="val">{{ "%.1f"|format(result.probabilities.suitable * 100) }}%</div>
+        <div class="lbl">Suitable Probability</div>
+    </div>
+    <div class="metric-card mc-red">
+        <div class="val">{{ "%.1f"|format(result.probabilities.not_suitable * 100) }}%</div>
+        <div class="lbl">Not Suitable Probability</div>
+    </div>
+    <div class="metric-card mc-blue">
+        <div class="val">{{ "%.1f"|format(result.confidence * 100) }}%</div>
+        <div class="lbl">Model Confidence</div>
+    </div>
+</div>
+
+<div class="alert-info">
+    📝 <strong>AI Explanation:</strong> {{ result.explanation }}
+</div>
+
+<div class="col-2">
+    <div>
+        <h4>🔬 Top Contributing Factors</h4>
+        {% if result.top_factors %}
+            {% for f in result.top_factors %}
+            <div class="factor-pill">
+                <div class="icon">{{ '🔺' if f.shap_value > 0 else '🔻' }}</div>
+                <div class="name">{{ f.feature }}</div>
+                <div class="val">{{ "%.2f"|format(f.value) }}</div>
+                <div class="{{ 'shap-pos' if f.shap_value > 0 else 'shap-neg' }}">SHAP: {{ "%+.3f"|format(f.shap_value) }}</div>
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div>
+        <h4>📊 SHAP Waterfall Chart</h4>
+        {% if shap_plot_url %}
+            <img src="data:image/png;base64,{{ shap_plot_url }}" alt="SHAP Waterfall" class="img-fluid" style="background: white; padding: 10px;">
+        {% else %}
+            <div style="color: #64748b; font-size: 0.9rem;">Waterfall chart unavailable.</div>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+{% endblock %}
