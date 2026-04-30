@@ -98,6 +98,7 @@ html, body {
     position: relative;
     background: linear-gradient(135deg, #e0f2fe, #38bdf8, #7dd3fc);
     -webkit-background-clip: text; 
+    background-clip: text;
     -webkit-text-fill-color: transparent; 
 }
 .hero p { 
