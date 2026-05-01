@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-﻿sno,district,mandal,village,lat_gis,long_gis,RL_GIS,season,pH,E.C,TDS,CO3,HCO3,Cl,F,NO3 ,SO4,Na,K,Ca,Mg,T.H,SAR,Classification,RSC  meq  / L,Classification.1
+sno,district,mandal,village,lat_gis,long_gis,RL_GIS,season,pH,E.C,TDS,CO3,HCO3,Cl,F,NO3 ,SO4,Na,K,Ca,Mg,T.H,SAR,Classification,RSC  meq  / L,Classification.1
 1,ADILABAD,Adilabad,Adilabad,78.52,19.67,253,Post-monsoon 2021,8.04,1065,682,0,230,150,0.72,56.4,69,85,3,64,53,380,1.90,C3S1,-3.00,P.S.
 2,ADILABAD,Bazarhatnur,Bazarhatnur,78.35,19.46,435,Post-monsoon 2021,8.21,122,78,0,40,30,0.07,0.4,9,14,2,8,10,60,0.79,C1S1,-0.40,P.S.
 3,ADILABAD,Bela,Chandpally,78.85,19.68,247,Post-monsoon 2021,7.99,945,605,0,340,50,0.57,83.5,13,118,3,40,34,240,3.31,C3S1,2.00,MR
