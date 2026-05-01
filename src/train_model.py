@@ -23,13 +23,12 @@ MODELS_DIR = os.path.join(BASE_DIR, "models")
 def get_model_configs():
     """Return list of (name, estimator, param_distributions) tuples."""
     configs = [
-        ("Random Forest", RandomForestClassifier(random_state=42), {
+        ("Random Forest", RandomForestClassifier(random_state=42, class_weight="balanced"), {
             "n_estimators": [100, 200, 300, 500],
             "max_depth": [5, 10, 15, 20, None],
             "min_samples_split": [2, 5, 10],
             "min_samples_leaf": [1, 2, 4],
             "max_features": ["sqrt", "log2"],
-            "class_weight": ["balanced", None],
         }),
         ("Gradient Boosting", GradientBoostingClassifier(random_state=42), {
             "n_estimators": [100, 200, 300],
@@ -51,7 +50,7 @@ def get_model_configs():
             "min_child_weight": [1, 3, 5],
             "subsample": [0.8, 0.9, 1.0],
             "colsample_bytree": [0.8, 0.9, 1.0],
-            "scale_pos_weight": [1, 3, 5],
+            "scale_pos_weight": [11],  # ~92/8 class ratio
         }))
     except ImportError:
         print("  XGBoost not installed. Skipping.")

@@ -54,7 +54,7 @@ FEATURE_DISPLAY_NAMES = {
 TARGET_COLUMN = "Classification.1"
 CLASS_MAPPING = {
     "P.S.": 1,   # Presumably Safe  → Suitable
-    "MR": 1,     # Marginally Safe  → Suitable (borderline acceptable)
+    "MR": 0,     # Marginally Safe  → Not Suitable (borderline = do not risk it)
     "U.S.": 0,   # Unsuitable       → Not Suitable
 }
 
@@ -88,6 +88,11 @@ def load_and_clean_data(data_path: str = None) -> pd.DataFrame:
 
     df = pd.read_csv(data_path)
 
+    print("Columns in dataset:")
+    print(df.columns.tolist())
+
+    df.columns = df.columns.str.strip()  # removes extra spaces
+    
     # Keep only the columns we need
     cols_to_keep = FEATURE_COLUMNS + [TARGET_COLUMN]
     df = df[cols_to_keep].copy()
