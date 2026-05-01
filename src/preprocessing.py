@@ -89,10 +89,18 @@ def load_and_clean_data(data_path: str = None) -> pd.DataFrame:
     df = pd.read_csv(data_path)
 
     print("Columns in dataset:")
-    print(df.columns.tolist())
+    for col in df.columns:
+        print(f"'{col}'")
 
-    df.columns = df.columns.str.strip()  # removes extra spaces
+    df.columns = df.columns.str.strip()
+    df.columns = df.columns.str.replace(r"\s+", " ", regex=True)
     
+    # Normalize known column name variants after stripping.
+    # Dataset often contains "NO3 " in code expectations but "NO3" after strip().
+    if "NO3" in df.columns and "NO3 " not in df.columns:
+        df = df.rename(columns={"NO3": "NO3 "})
+
+
     # Keep only the columns we need
     cols_to_keep = FEATURE_COLUMNS + [TARGET_COLUMN]
     df = df[cols_to_keep].copy()
