@@ -1,77 +1,77 @@
 {% extends "base.html" %}
+{% block title %}Home{% endblock %}
 
 {% block content %}
-<form method="POST" action="{{ url_for('index') }}">
-    <div class="section-card">
-        <div class="section-title">🧪 Enter Water Chemical Parameters</div>
-        <div class="form-grid">
-            {% for col in features %}
-            <div class="form-group">
-                <label for="{{ col }}">{{ icons[col] }} {{ display[col] }} {% if units[col] %}({{ units[col] }}){% endif %}</label>
-                <input type="number" step="0.1" id="{{ col }}" name="{{ col }}" 
-                       min="{{ ranges[col][0] }}" max="{{ ranges[col][1] }}" 
-                       value="{{ defaults[col] }}" required>
-            </div>
-            {% endfor %}
-        </div>
-        <button type="submit" class="btn-primary">🔍 Analyze Water Quality</button>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">🤖 Powered by Machine Learning &amp; SHAP Explainability</div>
+    <h1>AI-Powered Water Quality Eligibility Checker</h1>
+    <p>Analyze water safety for sustainable agriculture using advanced machine learning insights. Get instant predictions with full explainability.</p>
+    <div class="hero-buttons">
+      <a href="/analyze" class="btn btn-primary">🔬 Start Analysis</a>
+      <a href="/dashboard" class="btn btn-outline">📊 View Dashboard</a>
     </div>
-</form>
+  </div>
+  <div class="wave-wrap">
+    <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+      <path class="wave-1" d="M0,40 C360,100 720,0 1080,60 C1260,90 1380,50 1440,70 L1440,120 L0,120Z"/>
+      <path class="wave-2" d="M0,60 C240,20 480,90 720,50 C960,10 1200,80 1440,40 L1440,120 L0,120Z"/>
+      <path class="wave-3" d="M0,80 C180,50 360,100 540,70 C720,40 900,90 1080,60 C1260,30 1380,80 1440,55 L1440,120 L0,120Z"/>
+    </svg>
+  </div>
+</section>
 
-{% if error %}
-<div class="alert-info" style="border-left-color: #ef4444; color: #b91c1c; background-color: #fef2f2;">
-    ⚠️ Error: {{ error }}
-</div>
-{% endif %}
+<!-- FEATURES -->
+<section class="section">
+  <div class="container">
+    <div class="section-header fade-in">
+      <h2>How It Works</h2>
+      <p>Our AI system analyzes 15 chemical parameters to determine water suitability for agricultural irrigation.</p>
+    </div>
+    <div class="features-grid">
+      <div class="glass-card feature-card fade-in">
+        <span class="icon">🧪</span>
+        <h3>Input Parameters</h3>
+        <p>Enter 15 key water chemistry parameters including pH, TDS, Chloride, Sodium, and more using intuitive sliders.</p>
+      </div>
+      <div class="glass-card feature-card fade-in">
+        <span class="icon">🤖</span>
+        <h3>ML Analysis</h3>
+        <p>Our ensemble model (Random Forest, Gradient Boosting, XGBoost) analyzes the sample with hyperparameter-tuned accuracy.</p>
+      </div>
+      <div class="glass-card feature-card fade-in">
+        <span class="icon">📊</span>
+        <h3>Explainable Results</h3>
+        <p>Get a clear prediction with SHAP-based explanations showing exactly which factors influenced the classification.</p>
+      </div>
+      <div class="glass-card feature-card fade-in">
+        <span class="icon">🌾</span>
+        <h3>Agriculture Ready</h3>
+        <p>Built specifically for agricultural water quality assessment, helping farmers make informed irrigation decisions.</p>
+      </div>
+      <div class="glass-card feature-card fade-in">
+        <span class="icon">⚡</span>
+        <h3>Instant Prediction</h3>
+        <p>Get results in seconds with a confidence score and detailed breakdown of contributing factors.</p>
+      </div>
+      <div class="glass-card feature-card fade-in">
+        <span class="icon">📈</span>
+        <h3>Visual Dashboard</h3>
+        <p>Explore model performance, feature importance, correlation heatmaps, and SHAP analysis on the interactive dashboard.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-{% if result %}
-<div class="result-box {{ 'result-suitable' if is_safe else 'result-unsuitable' }}">
-    <div class="result-icon">{{ '✅' if is_safe else '❌' }}</div>
-    <div class="result-label" style="color: {{ '#059669' if is_safe else '#dc2626' }}">{{ result.label }}</div>
-    <div class="result-conf">Confidence: {{ "%.1f"|format(result.confidence * 100) }}%</div>
-</div>
-
-<div class="metric-row">
-    <div class="metric-card mc-green">
-        <div class="val">{{ "%.1f"|format(result.probabilities.suitable * 100) }}%</div>
-        <div class="lbl">Suitable Probability</div>
+<!-- CTA -->
+<section class="section" style="padding-bottom:40px;">
+  <div class="container" style="text-align:center;">
+    <div class="fade-in">
+      <h2 style="font-size:1.8rem;font-weight:800;color:var(--primary);margin-bottom:16px;">Ready to analyze your water sample?</h2>
+      <p style="color:var(--text-secondary);margin-bottom:28px;">Enter your water chemistry parameters and get an AI-powered eligibility assessment in seconds.</p>
+      <a href="/analyze" class="btn btn-primary" style="font-size:1.1rem;padding:16px 40px;">🔬 Start Analysis Now</a>
     </div>
-    <div class="metric-card mc-red">
-        <div class="val">{{ "%.1f"|format(result.probabilities.not_suitable * 100) }}%</div>
-        <div class="lbl">Not Suitable Probability</div>
-    </div>
-    <div class="metric-card mc-blue">
-        <div class="val">{{ "%.1f"|format(result.confidence * 100) }}%</div>
-        <div class="lbl">Model Confidence</div>
-    </div>
-</div>
-
-<div class="alert-info">
-    📝 <strong>AI Explanation:</strong> {{ result.explanation }}
-</div>
-
-<div class="col-2">
-    <div>
-        <h4>🔬 Top Contributing Factors</h4>
-        {% if result.top_factors %}
-            {% for f in result.top_factors %}
-            <div class="factor-pill">
-                <div class="icon">{{ '🔺' if f.shap_value > 0 else '🔻' }}</div>
-                <div class="name">{{ f.feature }}</div>
-                <div class="val">{{ "%.2f"|format(f.value) }}</div>
-                <div class="{{ 'shap-pos' if f.shap_value > 0 else 'shap-neg' }}">SHAP: {{ "%+.3f"|format(f.shap_value) }}</div>
-            </div>
-            {% endfor %}
-        {% endif %}
-    </div>
-    <div>
-        <h4>📊 SHAP Waterfall Chart</h4>
-        {% if shap_plot_url %}
-            <img src="data:image/png;base64,{{ shap_plot_url }}" alt="SHAP Waterfall" class="img-fluid" style="background: white; padding: 10px;">
-        {% else %}
-            <div style="color: #64748b; font-size: 0.9rem;">Waterfall chart unavailable.</div>
-        {% endif %}
-    </div>
-</div>
-{% endif %}
+  </div>
+</section>
 {% endblock %}

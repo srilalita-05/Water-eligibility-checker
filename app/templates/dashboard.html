@@ -1,77 +1,68 @@
 {% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
 
 {% block content %}
-<div class="section-card">
-    <div class="section-title">📊 Model Performance & Visualizations</div>
-
-    <div class="tabs">
-        <button class="tab-btn active" onclick="showTab('tab1')">📈 Confusion Matrix</button>
-        <button class="tab-btn" onclick="showTab('tab2')">🔥 Correlation Heatmap</button>
-        <button class="tab-btn" onclick="showTab('tab3')">🏆 Feature Importance</button>
-        <button class="tab-btn" onclick="showTab('tab4')">🧠 SHAP Summary</button>
-        <button class="tab-btn" onclick="showTab('tab5')">🎯 SHAP Individual</button>
-    </div>
-
-    <div id="tab1" class="tab-content active">
-        <h4>Confusion Matrix</h4>
-        <p style="color:#64748b; font-size:0.9rem;">Shows how many predictions were correct vs incorrect for each class.</p>
-        <img src="{{ url_for('serve_output', filename='confusion_matrix.png') }}" alt="Confusion Matrix" class="img-fluid" onerror="this.onerror=null; this.parentNode.innerHTML+='<div class=\'alert-info\'>Plot not found. Run evaluation first.</div>'; this.style.display='none';">
-    </div>
-
-    <div id="tab2" class="tab-content">
-        <h4>Correlation Heatmap</h4>
-        <p style="color:#64748b; font-size:0.9rem;">Reveals relationships between different water parameters.</p>
-        <img src="{{ url_for('serve_output', filename='correlation_heatmap.png') }}" alt="Correlation Heatmap" class="img-fluid" onerror="this.onerror=null; this.parentNode.innerHTML+='<div class=\'alert-info\'>Plot not found. Run evaluation first.</div>'; this.style.display='none';">
-    </div>
-
-    <div id="tab3" class="tab-content">
-        <h4>Feature Importance</h4>
-        <p style="color:#64748b; font-size:0.9rem;">Ranks which chemical parameters have the most influence on predictions.</p>
-        <img src="{{ url_for('serve_output', filename='feature_importance.png') }}" alt="Feature Importance" class="img-fluid" onerror="this.onerror=null; this.parentNode.innerHTML+='<div class=\'alert-info\'>Plot not found. Run evaluation first.</div>'; this.style.display='none';">
-    </div>
-
-    <div id="tab4" class="tab-content">
-        <h4>SHAP Summary</h4>
-        <p style="color:#64748b; font-size:0.9rem;">Global SHAP values showing each feature's impact across all test samples.</p>
-        <img src="{{ url_for('serve_output', filename='shap_summary.png') }}" alt="SHAP Summary" class="img-fluid" onerror="this.onerror=null; this.parentNode.innerHTML+='<div class=\'alert-info\'>Plot not found. Run evaluation first.</div>'; this.style.display='none';">
-    </div>
-
-    <div id="tab5" class="tab-content">
-        <h4>SHAP Individual</h4>
-        <p style="color:#64748b; font-size:0.9rem;">SHAP waterfall for a single test sample showing how each feature pushed the prediction.</p>
-        <img src="{{ url_for('serve_output', filename='shap_individual.png') }}" alt="SHAP Individual" class="img-fluid" onerror="this.onerror=null; this.parentNode.innerHTML+='<div class=\'alert-info\'>Plot not found. Run evaluation first.</div>'; this.style.display='none';">
-    </div>
-
+<div class="dash-header">
+  <h1>📊 Model Performance Dashboard</h1>
+  <p style="color:var(--text-secondary);">Visualizations, metrics, and explainability analysis</p>
 </div>
 
-<div class="section-card">
-    <div class="section-title">📋 Model Metrics</div>
-    {% if meta %}
-    <div class="metric-row">
-        <div class="metric-card">
-            <div class="lbl">🏆 Best Model</div>
-            <div class="val" style="font-size: 1.2rem;">{{ meta.best_model_name }}</div>
-        </div>
-        <div class="metric-card">
-            <div class="lbl">📈 Test ROC-AUC</div>
-            <div class="val" style="font-size: 1.2rem;">{{ "%.4f"|format(meta.test_auc) }}</div>
-        </div>
-        <div class="metric-card">
-            <div class="lbl">✅ Status</div>
-            <div class="val" style="font-size: 1.2rem; color: #059669;">Production Ready</div>
-        </div>
+<div class="container">
+  <!-- Model Metrics -->
+  {% if meta %}
+  <div class="metrics-row fade-in">
+    <div class="glass-card metric-card mc-primary">
+      <div class="value">{{ meta.best_model_name }}</div>
+      <div class="label">🏆 Best Model</div>
     </div>
-    {% else %}
-    <div class="alert-info">Train the model to see metrics.</div>
-    {% endif %}
-</div>
+    <div class="glass-card metric-card mc-green">
+      <div class="value">{{ "%.4f"|format(meta.test_auc) }}</div>
+      <div class="label">📈 ROC-AUC Score</div>
+    </div>
+    <div class="glass-card metric-card mc-blue">
+      <div class="value">🟢 Ready</div>
+      <div class="label">⚙️ Model Status</div>
+    </div>
+  </div>
+  {% else %}
+  <div class="glass-card" style="text-align:center;padding:32px;margin-bottom:32px;">
+    <p style="color:var(--text-muted);">⚠️ Model not trained yet. Run <code>python run_all.py</code> to train.</p>
+  </div>
+  {% endif %}
 
+  <!-- Plot Tabs -->
+  <div class="plot-tabs fade-in">
+    {% for plot in plots %}
+    <button class="plot-tab {% if loop.first %}active{% endif %}"
+            onclick="switchPlot({{ loop.index0 }}, this)">
+      {{ plot.title }}
+    </button>
+    {% endfor %}
+  </div>
+
+  <!-- Plot Panels -->
+  {% for plot in plots %}
+  <div class="plot-panel {% if loop.first %}active{% endif %}" id="plotPanel{{ loop.index0 }}">
+    <div class="glass-card plot-container fade-in">
+      {% if plot.exists %}
+        <img src="/outputs/{{ plot.file }}" alt="{{ plot.title }}" loading="lazy">
+      {% else %}
+        <p style="color:var(--text-muted);padding:40px;">Plot not generated yet. Run the evaluation pipeline.</p>
+      {% endif %}
+      <p class="plot-desc">{{ plot.desc }}</p>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
+
+{% block scripts %}
 <script>
-function showTab(tabId) {
-    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-    document.getElementById(tabId).classList.add('active');
-    event.currentTarget.classList.add('active');
+function switchPlot(index, btn) {
+  document.querySelectorAll('.plot-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.plot-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('plotPanel' + index).classList.add('active');
 }
 </script>
 {% endblock %}

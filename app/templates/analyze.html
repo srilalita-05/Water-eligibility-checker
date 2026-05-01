@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block title %}Analyze{% endblock %}
+
+{% block content %}
+<!-- Loading Overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="ripple-container">
+    <div class="ripple"></div>
+    <div class="ripple"></div>
+    <div class="ripple"></div>
+  </div>
+  <div class="loading-text">🔬 Running AI Analysis...</div>
+</div>
+
+<!-- Header -->
+<div class="analyze-header">
+  <h1>🧪 Water Quality Analysis</h1>
+  <p>Enter the chemical parameters of your water sample below</p>
+</div>
+
+<div class="container">
+  <!-- Presets -->
+  <div class="preset-bar">
+    <button class="btn btn-sm btn-preset active" data-preset="safe" onclick="loadPreset('safe')">✅ Safe Water Sample</button>
+    <button class="btn btn-sm btn-preset" data-preset="unsafe" onclick="loadPreset('unsafe')">⚠️ Unsafe Water Sample</button>
+  </div>
+
+  <!-- Parameter Inputs -->
+  <div class="params-grid">
+    {% for feat in features %}
+    <div class="param-card">
+      <div class="param-header">
+        <span class="param-icon">{{ icons[feat] }}</span>
+        <span class="param-label">{{ display[feat] }}</span>
+        {% if units[feat] %}<span class="param-unit">{{ units[feat] }}</span>{% endif %}
+        <span class="param-tooltip" data-tip="{{ tooltips[feat] }}">?</span>
+      </div>
+      <div class="param-controls">
+        <input type="range" class="param-slider" name="{{ feat }}"
+               min="{{ ranges[feat][0] }}" max="{{ ranges[feat][1] }}"
+               step="{{ steps[feat] }}" value="{{ defaults[feat] }}">
+        <input type="number" class="param-number" name="{{ feat }}"
+               min="{{ ranges[feat][0] }}" max="{{ ranges[feat][1] }}"
+               step="{{ steps[feat] }}" value="{{ defaults[feat] }}">
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Analyze Button -->
+  <button class="btn btn-analyze" onclick="analyzeWater()">
+    🔍 Analyze Water Quality
+  </button>
+
+  <!-- RESULTS SECTION -->
+  <div class="results-section" id="resultsSection">
+    <!-- Status Card -->
+    <div id="statusCard" class="result-status-card safe"></div>
+
+    <div class="result-details">
+      <!-- Confidence Meter -->
+      <div class="glass-card confidence-card">
+        <h3 style="font-size:1.1rem;font-weight:700;color:var(--primary);margin-bottom:16px;">🎯 Confidence Meter</h3>
+        <div class="confidence-ring-wrap">
+          <svg viewBox="0 0 120 120" width="160" height="160">
+            <circle class="ring-bg" cx="60" cy="60" r="54"/>
+            <circle class="ring-fill safe" id="ringFill" cx="60" cy="60" r="54"
+                    style="stroke-dasharray: 0 339.292"/>
+          </svg>
+          <div class="confidence-value">
+            <span class="pct" id="confPct">0%</span>
+            <span class="lbl">Confidence</span>
+          </div>
+        </div>
+        <div class="prob-bars">
+          <div class="prob-row">
+            <span class="prob-label">Suitable</span>
+            <div class="prob-track"><div class="prob-fill safe-fill" id="safeFill" style="width:0%"></div></div>
+            <span class="prob-pct" id="safePct" style="color:#059669">0%</span>
+          </div>
+          <div class="prob-row">
+            <span class="prob-label">Not Suitable</span>
+            <div class="prob-track"><div class="prob-fill unsafe-fill" id="unsafeFill" style="width:0%"></div></div>
+            <span class="prob-pct" id="unsafePct" style="color:#dc2626">0%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Factors -->
+      <div class="glass-card factors-card">
+        <h3>🔬 Top Contributing Factors</h3>
+        <div id="factorsList"></div>
+      </div>
+    </div>
+
+    <!-- Explanation -->
+    <div class="glass-card explanation-card">
+      <h3>💡 Why This Result?</h3>
+      <p id="explanationText"></p>
+    </div>
+
+    <!-- SHAP Chart -->
+    <div class="glass-card shap-card" id="shapChart" style="display:none;"></div>
+  </div>
+
+  <!-- HISTORY -->
+  <div class="history-section">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+      <h2>📋 Recent Analyses</h2>
+      <button class="btn btn-sm btn-preset" onclick="clearHistory()">Clear History</button>
+    </div>
+    <div class="history-grid" id="historyGrid"></div>
+  </div>
+</div>
+{% endblock %}

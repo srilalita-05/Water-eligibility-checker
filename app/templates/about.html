@@ -1,31 +1,35 @@
 {% extends "base.html" %}
+{% block title %}About{% endblock %}
 
 {% block content %}
-<div class="col-2">
-    <div class="section-card">
-        <div class="section-title">🎯 Purpose</div>
-        <p>This AI system analyzes <b>15 chemical parameters</b> of groundwater to determine 
-        if it is <b>suitable for agricultural irrigation</b>. Built with interpretable ML, 
-        every prediction comes with a clear explanation of <i>why</i> the water was classified 
-        the way it was.</p>
-    </div>
-    
-    <div class="section-card">
-        <div class="section-title">🤖 ML Pipeline</div>
-        <ol>
-        <li><b>Preprocessing:</b> Median imputation + StandardScaler</li>
-        <li><b>Models:</b> Random Forest, Gradient Boosting, XGBoost</li>
-        <li><b>Tuning:</b> RandomizedSearchCV (30 iter, 5-fold CV)</li>
-        <li><b>Selection:</b> Best model by ROC-AUC</li>
-        <li><b>Explainability:</b> SHAP TreeExplainer</li>
-        </ol>
-    </div>
+<div class="dash-header">
+  <h1>📖 About AquaCheck AI</h1>
+  <p style="color:var(--text-secondary);">AI-Based Freshwater Quality Assessment for Sustainable Agriculture</p>
 </div>
 
-<div class="col-2">
-    <div class="section-card">
-        <div class="section-title">🔬 Parameters Analyzed</div>
-        <table style="width:100%; font-size:0.95rem; border-collapse: separate; border-spacing: 0 0.5rem;">
+<div class="container">
+  <div class="about-grid">
+    <div class="glass-card about-card fade-in">
+      <h3>🎯 Purpose</h3>
+      <p>This AI system analyzes <strong>15 chemical parameters</strong> of groundwater to determine if it is
+      <strong>suitable for agricultural irrigation</strong>. Built with interpretable ML, every prediction comes
+      with a clear explanation of <em>why</em> the water was classified the way it was.</p>
+    </div>
+
+    <div class="glass-card about-card fade-in">
+      <h3>🤖 ML Pipeline</h3>
+      <ol>
+        <li><strong>Preprocessing:</strong> Median imputation + StandardScaler</li>
+        <li><strong>Models:</strong> Random Forest, Gradient Boosting, XGBoost</li>
+        <li><strong>Tuning:</strong> RandomizedSearchCV (30 iter, 5-fold CV)</li>
+        <li><strong>Selection:</strong> Best model by ROC-AUC</li>
+        <li><strong>Explainability:</strong> SHAP TreeExplainer</li>
+      </ol>
+    </div>
+
+    <div class="glass-card about-card fade-in">
+      <h3>🔬 Parameters Analyzed</h3>
+      <table class="param-table">
         <tr><td>⚗️ pH Level</td><td>⚡ Electrical Conductivity</td></tr>
         <tr><td>🧂 Total Dissolved Solids</td><td>🔬 Carbonate</td></tr>
         <tr><td>🧫 Bicarbonate</td><td>🟢 Chloride</td></tr>
@@ -33,23 +37,35 @@
         <tr><td>🟠 Sulphate</td><td>🔴 Sodium</td></tr>
         <tr><td>🟣 Potassium</td><td>⚪ Calcium</td></tr>
         <tr><td>🟤 Magnesium</td><td>💎 Total Hardness</td></tr>
-        <tr><td colspan="2">📐 Sodium Adsorption Ratio</td></tr>
-        </table>
+        <tr><td colspan="2">📐 Sodium Adsorption Ratio (SAR)</td></tr>
+      </table>
     </div>
-    
-    <div class="section-card">
-        <div class="section-title">📊 Dataset</div>
-        <ul style="line-height: 1.6;">
-        <li><b>Source:</b> Telangana Groundwater Quality Data</li>
-        <li><b>Samples:</b> ~1,000 water samples across 30+ districts</li>
-        <li><b>Season:</b> Post-monsoon 2021</li>
-        <li><b>Target:</b> P.S. (Safe) / MR (Marginal) / U.S. (Unsuitable)</li>
-        </ul>
-    </div>
-</div>
 
-<div class="section-card" style="text-align:center;">
-    <div class="section-title">🚀 How to Use</div>
-    <p>1️⃣ Go to <b>🧪 Predict</b> → 2️⃣ Enter water parameters → 3️⃣ Click <b>Analyze</b> → 4️⃣ Get results with AI explanation</p>
+    <div class="glass-card about-card fade-in">
+      <h3>📊 Dataset</h3>
+      <ul>
+        <li><strong>Source:</strong> Telangana Groundwater Quality Data</li>
+        <li><strong>Samples:</strong> ~1,000 water samples across 30+ districts</li>
+        <li><strong>Season:</strong> Post-monsoon 2021</li>
+        <li><strong>Target Classes:</strong>
+          <ul>
+            <li>P.S. (Presumably Safe) → Suitable</li>
+            <li>MR (Marginal) → Not Suitable</li>
+            <li>U.S. (Unsuitable) → Not Suitable</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="glass-card fade-in" style="text-align:center;padding:32px;margin-top:24px;">
+    <h3 style="color:var(--primary);margin-bottom:12px;">🚀 How to Use</h3>
+    <p style="color:var(--text-secondary);font-size:1.05rem;">
+      1️⃣ Go to <a href="/analyze"><strong>Analyze</strong></a> →
+      2️⃣ Enter water parameters →
+      3️⃣ Click <strong>Analyze</strong> →
+      4️⃣ Get results with AI explanation
+    </p>
+  </div>
 </div>
 {% endblock %}
